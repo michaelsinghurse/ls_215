@@ -30,42 +30,17 @@ let longText = 'Four score and seven years ago our fathers brought forth' +
   ' the people, for the people, shall not perish from the' +
   ' earth.';
 
-// The problem states a sentence starts with a word character. I chose not to 
-// use the word character class shortcut "\w" because it includes the underscore
-// character, and it would be unusual for a sentence to start with an underscore.
-const REGEX_SENTENCE_BEGIN = /[A-Za-z0-9]/g;
-
-const REGEX_SENTENCE_END = /[?!.]/g;
+// A sentence starts with a word character. I chose not to use the word
+// character class shortcut (\w) because I don't want to match an underscore
+// as starting a sentence. The sentence terminates with a question mark, 
+// exclamation mark, or period.
+const REGEX_SENTENCE = /[A-Za-z0-9][^?!.]*[?!.]/g;
 
 // A word is a sequence of non-white-space and non-sentence-ending characters. 
 const REGEX_WORD = /[^\s?!.]+/g;
 
 function getSentencesArray(text) {
-  let sentences = [];
-  let sentence = "";
-  let inSentence = false;
-
-  for (let index = 0; index < text.length; index += 1) {
-    let character = text[index];
-
-    if (!inSentence) {
-      if (REGEX_SENTENCE_BEGIN.test(character)) {
-        sentence += character;
-        inSentence = true;
-      }
-    } else {
-      if (REGEX_SENTENCE_END.test(character)) {
-        sentence += character;
-        sentences.push(sentence);
-        sentence = "";
-        inSentence = false;
-      } else {
-        sentence += character;
-      }
-    }
-  }
-
-  return sentences;
+  return text.match(REGEX_SENTENCE) || [];
 }
 
 function getWordCount(text) {
@@ -96,5 +71,4 @@ function longestSentence(text) {
 }
 
 longestSentence(longText);
-
 
