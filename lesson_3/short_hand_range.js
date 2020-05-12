@@ -1,6 +1,6 @@
 // short_hand_range.js
 
-function getRangeLimit(prev, next) {
+function getRangeLimit1(prev, next) {
   let prevLeft = prev.slice(0, prev.length - next.length);
   let prevRight = prev.slice(prev.length - next.length);
 
@@ -8,6 +8,17 @@ function getRangeLimit(prev, next) {
     return prevLeft + next;
   } else {
     return String(Number(prevLeft) + 1) + next; 
+  }
+}
+
+function getRangeLimit(prev, next) {
+  let nextLength = next.length;
+  let counter = Number(prev) + 1;
+  while (true) {
+    if (String(counter).slice(-1 * nextLength) === next) {
+      return String(counter);
+    }
+    counter += 1;
   }
 }
 
